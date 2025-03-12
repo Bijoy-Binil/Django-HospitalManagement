@@ -1,0 +1,236 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<style>
+    /* Billing History Specific Styles */
+    .billing-header {
+        background: linear-gradient(135deg, #4e73df 0%, #224abe 100%);
+        color: white;
+        padding: 2rem;
+        border-radius: 0.5rem;
+        margin-bottom: 2rem;
+        box-shadow: 0 0.15rem 1.75rem 0 rgba(58, 59, 69, 0.15);
+    }
+    
+    .billing-stats {
+        display: flex;
+        margin-top: 1rem;
+    }
+    
+    .billing-stat {
+        background: rgba(255, 255, 255, 0.2);
+        border-radius: 0.5rem;
+        padding: 1rem;
+        margin-right: 1rem;
+        min-width: 150px;
+        backdrop-filter: blur(5px);
+    }
+    
+    .billing-stat-value {
+        font-size: 1.5rem;
+        font-weight: 700;
+    }
+    
+    .billing-stat-label {
+        font-size: 0.8rem;
+        text-transform: uppercase;
+        opacity: 0.8;
+    }
+    
+    .table th {
+        font-weight: 600;
+        text-transform: uppercase;
+        font-size: 0.8rem;
+        color: #4e73df;
+        border-top: none;
+    }
+    
+    .billing-table {
+        box-shadow: 0 0.15rem 1.75rem 0 rgba(58, 59, 69, 0.15);
+        border-radius: 0.5rem;
+        overflow: hidden;
+    }
+    
+    .billing-table .table {
+        margin-bottom: 0;
+    }
+    
+    .billing-status {
+        font-size: 0.75rem;
+        font-weight: 700;
+        padding: 0.25rem 0.5rem;
+        border-radius: 10rem;
+        display: inline-block;
+    }
+    
+    .status-completed {
+        background-color: #d4edda;
+        color: #155724;
+    }
+    
+    .status-pending {
+        background-color: #fff3cd;
+        color: #856404;
+    }
+    
+    .status-failed {
+        background-color: #f8d7da;
+        color: #721c24;
+    }
+    
+    .action-btn {
+        padding: 0.25rem 0.5rem;
+        font-size: 0.75rem;
+        border-radius: 0.25rem;
+    }
+    
+    .invoice-link {
+        color: #4e73df;
+        text-decoration: none;
+        font-weight: 600;
+    }
+    
+    .invoice-link:hover {
+        text-decoration: underline;
+    }
+    
+    @media (max-width: 768px) {
+        .billing-stats {
+            flex-direction: column;
+        }
+        
+        .billing-stat {
+            margin-right: 0;
+            margin-bottom: 1rem;
+        }
+    }
+</style>
+
+<div class="container mt-5 mb-5">
+    <!-- Billing Header -->
+    <div class="billing-header">
+        <div class="d-flex justify-content-between align-items-center">
+            <div>
+                <h2 class="mb-0">Billing History</h2>
+                <p class="mb-0">View and manage your payment records</p>
+            </div>
+            <div>
+                <a href="{% url 'Home:patient_dashboard' %}" class="btn btn-light">
+                    <i class="fas fa-arrow-left mr-1"></i> Back to Dashboard
+                </a>
+            </div>
+        </div>
+        
+        <div class="billing-stats">
+            <div class="billing-stat">
+                <div class="billing-stat-value">${{ total_paid|floatformat:2 }}</div>
+                <div class="billing-stat-label">Total Paid</div>
+            </div>
+            <div class="billing-stat">
+                <div class="billing-stat-value">${{ total_pending|floatformat:2 }}</div>
+                <div class="billing-stat-label">Pending Payments</div>
+            </div>
+            <div class="billing-stat">
+                <div class="billing-stat-value">{{ billing_records|length }}</div>
+                <div class="billing-stat-label">Total Transactions</div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Billing Records -->
+    <div class="card billing-table">
+        <div class="card-header bg-white py-3">
+            <h6 class="m-0 font-weight-bold text-primary">Payment Records</h6>
+        </div>
+        <div class="table-responsive">
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th>Invoice #</th>
+                        <th>Date</th>
+                        <th>Description</th>
+                        <th>Amount</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% if billing_records %}
+                        {% for record in billing_records %}
+                            <tr>
+                                <td>
+                                    <a href="#" class="invoice-link">INV-{{ record.id }}</a>
+                                </td>
+                                <td>{{ record.date|date:"M d, Y" }}</td>
+                                <td>{{ record.description }}</td>
+                                <td>${{ record.amount|floatformat:2 }}</td>
+                                <td>
+                                    <span class="billing-status {% if record.status == 'Completed' %}status-completed{% elif record.status == 'Failed' %}status-failed{% else %}status-pending{% endif %}">
+                                        {{ record.status }}
+                                    </span>
+                                </td>
+                                <td>
+                                    {% if record.status == 'Pending' %}
+                                        <a href="{% url 'Home:initiate_payment' record.appointment.id %}" class="btn btn-primary action-btn">
+                                            Pay Now
+                                        </a>
+                                    {% elif record.status == 'Completed' %}
+                                        <button class="btn btn-outline-secondary action-btn" disabled>
+                                            <i class="fas fa-file-invoice"></i> Receipt
+                                        </button>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    {% else %}
+                        <tr>
+                            <td colspan="6" class="text-center py-4">
+                                <i class="fas fa-receipt fa-3x text-muted mb-3 d-block"></i>
+                                <p class="mb-0">No billing records found</p>
+                            </td>
+                        </tr>
+                    {% endif %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    
+    <!-- Payment Information -->
+    <div class="card mt-4">
+        <div class="card-header bg-white py-3">
+            <h6 class="m-0 font-weight-bold text-primary">Payment Information</h6>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-6">
+                    <h5 class="font-weight-bold">Payment Methods</h5>
+                    <p>We accept the following payment methods:</p>
+                    <div class="d-flex">
+                        <div class="mr-3">
+                            <i class="fab fa-cc-visa fa-2x text-primary"></i>
+                        </div>
+                        <div class="mr-3">
+                            <i class="fab fa-cc-mastercard fa-2x text-danger"></i>
+                        </div>
+                        <div class="mr-3">
+                            <i class="fab fa-cc-amex fa-2x text-info"></i>
+                        </div>
+                        <div>
+                            <i class="fab fa-cc-paypal fa-2x text-primary"></i>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <h5 class="font-weight-bold">Need Help?</h5>
+                    <p>If you have any questions about your billing, please contact our billing department:</p>
+                    <p>
+                        <i class="fas fa-phone mr-2"></i> (123) 456-7890<br>
+                        <i class="fas fa-envelope mr-2"></i> billing@hospital.com
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %} 

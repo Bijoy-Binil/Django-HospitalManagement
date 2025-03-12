@@ -1,0 +1,1031 @@
+<!-- doctor_dashboard.html -->
+{% extends 'base.html' %}
+{% block content %}
+<style>
+/* Modern Doctor Dashboard Styling */
+:root {
+    --primary-color: #4e73df;
+    --secondary-color: #1cc88a;
+    --warning-color: #f6c23e;
+    --danger-color: #e74a3b;
+    --info-color: #36b9cc;
+    --dark-color: #5a5c69;
+    --light-color: #f8f9fc;
+    --shadow: 0 0.15rem 1.75rem 0 rgba(58, 59, 69, 0.15);
+    --border-radius: 0.35rem;
+}
+
+body {
+    background-color: #f8f9fc;
+    font-family: 'Nunito', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+}
+
+/* Sidebar styling */
+.sidebar {
+    min-height: 100vh;
+    background: linear-gradient(180deg, var(--primary-color) 0%, #224abe 100%);
+    box-shadow: var(--shadow);
+    z-index: 1;
+    transition: all 0.3s;
+}
+
+.sidebar-brand {
+    height: 4.375rem;
+    text-decoration: none;
+    font-size: 1rem;
+    font-weight: 800;
+    padding: 1.5rem 1rem;
+    text-align: center;
+    letter-spacing: 0.05rem;
+    z-index: 1;
+}
+
+.sidebar-brand-icon {
+    font-size: 2rem;
+}
+
+.sidebar-brand-text {
+    display: inline;
+    font-size: 1.2rem;
+}
+
+.sidebar .nav-item {
+    position: relative;
+}
+
+.sidebar .nav-item .nav-link {
+    display: block;
+    width: 100%;
+    text-align: left;
+    padding: 1rem;
+    color: rgba(255, 255, 255, 0.8);
+    transition: all 0.3s;
+}
+
+.sidebar .nav-item .nav-link:hover {
+    color: #fff;
+    background-color: rgba(255, 255, 255, 0.1);
+    border-radius: var(--border-radius);
+}
+
+.sidebar .nav-item .nav-link.active {
+    color: #fff;
+    font-weight: 700;
+    background-color: rgba(255, 255, 255, 0.2);
+    border-radius: var(--border-radius);
+}
+
+.sidebar .nav-item .nav-link i {
+    margin-right: 0.5rem;
+    font-size: 1rem;
+}
+
+/* Main content area */
+.main-content {
+    padding: 1.5rem;
+}
+
+/* Card styling */
+.card {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    word-wrap: break-word;
+    background-color: #fff;
+    background-clip: border-box;
+    border: 0;
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow);
+    margin-bottom: 1.5rem;
+    transition: transform 0.3s ease;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+}
+
+.card-header {
+    padding: 0.75rem 1.25rem;
+    margin-bottom: 0;
+    background-color: #f8f9fc;
+    border-bottom: 1px solid #e3e6f0;
+    border-radius: calc(0.35rem - 1px) calc(0.35rem - 1px) 0 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.card-header-icon {
+    font-size: 2rem;
+    opacity: 0.3;
+}
+
+.card-body {
+    flex: 1 1 auto;
+    padding: 1.25rem;
+}
+
+.card-title {
+    margin-bottom: 0.75rem;
+    font-weight: 700;
+    font-size: 1.1rem;
+}
+
+.card-text {
+    color: #6e707e;
+    margin-bottom: 1rem;
+}
+
+/* Stat cards */
+.stat-card {
+    border-left: 0.25rem solid;
+    border-radius: var(--border-radius);
+}
+
+.stat-card.primary {
+    border-left-color: var(--primary-color);
+}
+
+.stat-card.success {
+    border-left-color: var(--secondary-color);
+}
+
+.stat-card.warning {
+    border-left-color: var(--warning-color);
+}
+
+.stat-card.danger {
+    border-left-color: var(--danger-color);
+}
+
+.stat-card .stat-value {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--dark-color);
+}
+
+.stat-card .stat-label {
+    font-size: 0.8rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    color: #6e707e;
+}
+
+.stat-card .stat-icon {
+    font-size: 2rem;
+    opacity: 0.3;
+}
+
+/* Profile section */
+.profile-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 1.5rem;
+}
+
+.profile-avatar {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 4px solid #fff;
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+}
+
+.profile-info {
+    padding-left: 1.5rem;
+}
+
+.profile-name {
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-bottom: 0.25rem;
+}
+
+.profile-role {
+    color: #6e707e;
+    font-size: 0.875rem;
+    margin-bottom: 0.5rem;
+}
+
+.profile-stats {
+    display: flex;
+    margin-top: 1rem;
+}
+
+.profile-stat {
+    margin-right: 2rem;
+    text-align: center;
+}
+
+.profile-stat-value {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--dark-color);
+}
+
+.profile-stat-label {
+    font-size: 0.75rem;
+    color: #6e707e;
+    text-transform: uppercase;
+}
+
+/* Appointment list */
+.appointment-list {
+    list-style: none;
+    padding: 0;
+}
+
+.appointment-item {
+    padding: 1rem;
+    border-radius: var(--border-radius);
+    margin-bottom: 0.5rem;
+    background-color: #fff;
+    border-left: 0.25rem solid var(--primary-color);
+    box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+    transition: all 0.3s;
+}
+
+.appointment-item:hover {
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+}
+
+.appointment-item .appointment-title {
+    font-weight: 700;
+    margin-bottom: 0.25rem;
+}
+
+.appointment-item .appointment-details {
+    color: #6e707e;
+    font-size: 0.875rem;
+}
+
+.appointment-item .appointment-status {
+    font-size: 0.75rem;
+    font-weight: 700;
+    padding: 0.25rem 0.5rem;
+    border-radius: 10rem;
+    display: inline-block;
+}
+
+.status-pending {
+    background-color: #fff3cd;
+    color: #856404;
+}
+
+.status-confirmed {
+    background-color: #d4edda;
+    color: #155724;
+}
+
+.status-cancelled {
+    background-color: #f8d7da;
+    color: #721c24;
+}
+
+/* Calendar styling */
+.calendar-container {
+    background-color: #fff;
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow);
+    padding: 1rem;
+}
+
+.calendar-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.calendar-title {
+    font-size: 1.25rem;
+    font-weight: 700;
+}
+
+.calendar-nav {
+    display: flex;
+}
+
+.calendar-nav-btn {
+    background-color: #f8f9fc;
+    border: 1px solid #e3e6f0;
+    color: var(--primary-color);
+    padding: 0.25rem 0.5rem;
+    margin: 0 0.25rem;
+    border-radius: var(--border-radius);
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.calendar-nav-btn:hover {
+    background-color: var(--primary-color);
+    color: #fff;
+}
+
+.calendar-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 0.5rem;
+}
+
+.calendar-day {
+    text-align: center;
+    padding: 0.5rem;
+    border-radius: var(--border-radius);
+    background-color: #f8f9fc;
+    font-weight: 700;
+    font-size: 0.8rem;
+    color: #6e707e;
+}
+
+.calendar-date {
+    text-align: center;
+    padding: 0.5rem;
+    border-radius: var(--border-radius);
+    background-color: #fff;
+    border: 1px solid #e3e6f0;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.calendar-date:hover {
+    background-color: #f8f9fc;
+}
+
+.calendar-date.active {
+    background-color: var(--primary-color);
+    color: #fff;
+    border-color: var(--primary-color);
+}
+
+.calendar-date.has-events {
+    position: relative;
+}
+
+.calendar-date.has-events::after {
+    content: '';
+    position: absolute;
+    bottom: 0.25rem;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 0.5rem;
+    height: 0.5rem;
+    border-radius: 50%;
+    background-color: var(--danger-color);
+}
+
+/* Patient list */
+.patient-list {
+    list-style: none;
+    padding: 0;
+}
+
+.patient-item {
+    display: flex;
+    align-items: center;
+    padding: 1rem;
+    border-radius: var(--border-radius);
+    margin-bottom: 0.5rem;
+    background-color: #fff;
+    border: 1px solid #e3e6f0;
+    transition: all 0.3s;
+}
+
+.patient-item:hover {
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+}
+
+.patient-avatar {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-right: 1rem;
+}
+
+.patient-info {
+    flex: 1;
+}
+
+.patient-name {
+    font-weight: 700;
+    margin-bottom: 0.25rem;
+}
+
+.patient-details {
+    color: #6e707e;
+    font-size: 0.875rem;
+}
+
+.patient-action {
+    margin-left: 1rem;
+}
+
+/* Table styles */
+.table th {
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 0.8rem;
+    color: #4e73df;
+    border-top: none;
+}
+
+.badge {
+    font-size: 0.75rem;
+    font-weight: 700;
+    padding: 0.25rem 0.5rem;
+    border-radius: 10rem;
+}
+
+.badge-success {
+    background-color: #1cc88a;
+}
+
+.badge-warning {
+    background-color: #f6c23e;
+}
+
+.badge-danger {
+    background-color: #e74a3b;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .sidebar {
+        min-height: auto;
+    }
+    
+    .profile-header {
+        flex-direction: column;
+        text-align: center;
+    }
+    
+    .profile-info {
+        padding-left: 0;
+        padding-top: 1rem;
+    }
+    
+    .profile-stats {
+        justify-content: center;
+    }
+    
+    .payment-stat {
+        margin-bottom: 1rem;
+    }
+}
+
+/* Profile banner styling */
+.profile-banner {
+    border-radius: 0.5rem;
+    overflow: hidden;
+    box-shadow: 0 0.15rem 1.75rem 0 rgba(58, 59, 69, 0.15);
+}
+
+/* Quick action styling */
+.quick-actions {
+    display: flex;
+    flex-direction: column;
+}
+
+.quick-action-item {
+    display: flex;
+    align-items: center;
+    padding: 1rem;
+    border-radius: 0.5rem;
+    margin-bottom: 1rem;
+    transition: all 0.3s;
+    text-decoration: none;
+    color: #5a5c69;
+    border: 1px solid #e3e6f0;
+}
+
+.quick-action-item:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 0.15rem 1.75rem 0 rgba(58, 59, 69, 0.15);
+    color: #4e73df;
+    border-color: #4e73df;
+}
+
+.quick-action-icon {
+    background-color: #4e73df;
+    color: white;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 1rem;
+    font-size: 1.25rem;
+}
+
+.quick-action-text h5 {
+    font-size: 1rem;
+    margin-bottom: 0.25rem;
+    font-weight: 600;
+}
+
+.quick-action-text p {
+    font-size: 0.8rem;
+    margin-bottom: 0;
+    color: #858796;
+}
+
+/* Payment Stats */
+.payment-stat {
+    display: flex;
+    align-items: center;
+    padding: 1rem;
+    border-radius: 0.5rem;
+    background-color: #f8f9fc;
+    border: 1px solid #e3e6f0;
+}
+
+.payment-stat-icon {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 1rem;
+    color: white;
+}
+
+.bg-primary {
+    background-color: #4e73df !important;
+}
+
+.bg-warning {
+    background-color: #f6c23e !important;
+}
+
+.bg-success {
+    background-color: #1cc88a !important;
+}
+
+.bg-info {
+    background-color: #36b9cc !important;
+}
+
+.payment-stat-info h5 {
+    font-size: 1.25rem;
+    font-weight: 700;
+    margin-bottom: 0.25rem;
+}
+
+.payment-stat-info p {
+    font-size: 0.8rem;
+    margin-bottom: 0;
+    color: #858796;
+    text-transform: uppercase;
+}
+</style>
+
+
+
+<div class="container-fluid mt-5">
+    <div class="row">
+        <!-- Sidebar -->
+        <div class="col-md-3 col-lg-2 sidebar">
+            <div class="sidebar-brand d-flex align-items-center justify-content-center">
+                <div class="sidebar-brand-icon">
+                    <i class="fas fa-user-md text-white"></i>
+                </div>
+                <div class="sidebar-brand-text text-white mx-3">Doctor Portal</div>
+            </div>
+            
+            <hr class="sidebar-divider my-0" style="border-color: rgba(255,255,255,0.2);">
+            
+            <ul class="nav flex-column">
+                <li class="nav-item">
+                    <a class="nav-link active" href="#">
+                        <i class="fas fa-fw fa-tachometer-alt"></i>
+                        <span>Dashboard</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'Home:doc_view_appoint' doctor_id=doctor.id %}">
+                        <i class="fas fa-fw fa-calendar-check"></i>
+                        <span>Appointments</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">
+                        <i class="fas fa-fw fa-user-injured"></i>
+                        <span>Patients</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">
+                        <i class="fas fa-fw fa-notes-medical"></i>
+                        <span>Medical Records</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">
+                        <i class="fas fa-fw fa-prescription"></i>
+                        <span>Prescriptions</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">
+                        <i class="fas fa-fw fa-chart-line"></i>
+                        <span>Analytics</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">
+                        <i class="fas fa-fw fa-user-cog"></i>
+                        <span>Profile Settings</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'Home:logout' %}">
+                        <i class="fas fa-fw fa-sign-out-alt"></i>
+                        <span>Logout</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+
+        <!-- Main Content -->
+        <div class="col-md-9 col-lg-10 main-content">
+            <!-- Profile Header -->
+            <div class="card mb-4 profile-banner">
+                <div class="card-body">
+                    <div class="profile-header">
+                        <img src="{{ doctor.doc_image.url }}" alt="Doctor Profile" class="profile-avatar">
+                        <div class="profile-info">
+                            <h2 class="profile-name">Welcome, Dr. {{ doctor.doc_name }}</h2>
+                            <p class="profile-role">{{ doctor.dep_name }}</p>
+                            <div class="profile-stats">
+                                <div class="profile-stat">
+                                    <div class="profile-stat-value">{{ total_appointments }}</div>
+                                    <div class="profile-stat-label">Total Appointments</div>
+                                </div>
+                                <div class="profile-stat">
+                                    <div class="profile-stat-value">{{ new_appointments }}</div>
+                                    <div class="profile-stat-label">New Requests</div>
+                                </div>
+                                <div class="profile-stat">
+                                    <div class="profile-stat-value">{{ approved_appointments }}</div>
+                                    <div class="profile-stat-label">Upcoming</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Stats Row -->
+            <div class="row mb-4">
+                <!-- Total Patients -->
+                <div class="col-xl-3 col-md-6 mb-4">
+                    <div class="card stat-card primary h-100">
+                        <div class="card-body">
+                            <div class="row no-gutters align-items-center">
+                                <div class="col mr-2">
+                                    <div class="stat-label text-primary">Total Patients</div>
+                                    <div class="stat-value">{{ patient_count }}</div>
+                                </div>
+                                <div class="col-auto">
+                                    <i class="fas fa-users fa-2x text-primary stat-icon"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Today's Appointments -->
+                <div class="col-xl-3 col-md-6 mb-4">
+                    <div class="card stat-card success h-100">
+                        <div class="card-body">
+                            <div class="row no-gutters align-items-center">
+                                <div class="col mr-2">
+                                    <div class="stat-label text-success">Today's Appointments</div>
+                                    <div class="stat-value">{{ todays_appointments }}</div>
+                                </div>
+                                <div class="col-auto">
+                                    <i class="fas fa-calendar-day fa-2x text-success stat-icon"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Pending Appointments -->
+                <div class="col-xl-3 col-md-6 mb-4">
+                    <div class="card stat-card warning h-100">
+                        <div class="card-body">
+                            <div class="row no-gutters align-items-center">
+                                <div class="col mr-2">
+                                    <div class="stat-label text-warning">Pending Requests</div>
+                                    <div class="stat-value">{{ new_appointments }}</div>
+                                </div>
+                                <div class="col-auto">
+                                    <i class="fas fa-clock fa-2x text-warning stat-icon"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Completed Appointments -->
+                <div class="col-xl-3 col-md-6 mb-4">
+                    <div class="card stat-card danger h-100">
+                        <div class="card-body">
+                            <div class="row no-gutters align-items-center">
+                                <div class="col mr-2">
+                                    <div class="stat-label text-danger">Completed</div>
+                                    <div class="stat-value">{{ completed_appointments }}</div>
+                                </div>
+                                <div class="col-auto">
+                                    <i class="fas fa-check-circle fa-2x text-danger stat-icon"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Main Content Row -->
+            <div class="row">
+                <!-- Quick Actions -->
+                <div class="col-lg-4 mb-4">
+                    <div class="card shadow h-100">
+                        <div class="card-header py-3">
+                            <h6 class="m-0 font-weight-bold text-primary">Quick Actions</h6>
+                        </div>
+                        <div class="card-body">
+                            <div class="quick-actions">
+                                <a href="{% url 'Home:doc_view_appoint' doctor_id=doctor.id %}" class="quick-action-item">
+                                    <div class="quick-action-icon">
+                                        <i class="fas fa-calendar-check"></i>
+                                    </div>
+                                    <div class="quick-action-text">
+                                        <h5>View Appointments</h5>
+                                        <p>Manage your upcoming appointments</p>
+                                    </div>
+                                </a>
+                                <a href="#" class="quick-action-item">
+                                    <div class="quick-action-icon">
+                                        <i class="fas fa-user-injured"></i>
+                                    </div>
+                                    <div class="quick-action-text">
+                                        <h5>Patient Records</h5>
+                                        <p>View and manage patient records</p>
+                                    </div>
+                                </a>
+                                <a href="#" class="quick-action-item">
+                                    <div class="quick-action-icon">
+                                        <i class="fas fa-notes-medical"></i>
+                                    </div>
+                                    <div class="quick-action-text">
+                                        <h5>Medical Records</h5>
+                                        <p>Access patient medical history</p>
+                                    </div>
+                                </a>
+                                <a href="#" class="quick-action-item">
+                                    <div class="quick-action-icon">
+                                        <i class="fas fa-prescription"></i>
+                                    </div>
+                                    <div class="quick-action-text">
+                                        <h5>Prescriptions</h5>
+                                        <p>Create and manage prescriptions</p>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Today's Schedule -->
+                <div class="col-lg-8 mb-4">
+                    <div class="card shadow h-100">
+                        <div class="card-header py-3 d-flex justify-content-between align-items-center">
+                            <h6 class="m-0 font-weight-bold text-primary">Today's Schedule</h6>
+                            <a href="{% url 'Home:doc_view_appoint' doctor_id=doctor.id %}" class="btn btn-sm btn-primary">View All</a>
+                        </div>
+                        <div class="card-body">
+                            {% if todays_appointments_list %}
+                                <div class="table-responsive">
+                                    <table class="table table-hover">
+                                        <thead>
+                                            <tr>
+                                                <th>Time</th>
+                                                <th>Patient</th>
+                                                <th>Reason</th>
+                                                <th>Status</th>
+                                                <th>Actions</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {% for appointment in todays_appointments_list %}
+                                                <tr>
+                                                    <td>{{ appointment.appointment_date|time:"h:i A" }}</td>
+                                                    <td>{{ appointment.patient.first_name }} {{ appointment.patient.last_name }}</td>
+                                                    <td>{{ appointment.reason|truncatechars:30 }}</td>
+                                                    <td>
+                                                        <span class="badge badge-{% if appointment.status == 'Accepted' %}success{% elif appointment.status == 'Requested' %}warning{% else %}danger{% endif %}">
+                                                            {{ appointment.status }}
+                                                        </span>
+                                                    </td>
+                                                    <td>
+                                                        <div class="btn-group">
+                                                            <button type="button" class="btn btn-sm btn-primary">View</button>
+                                                            {% if appointment.status == 'Requested' %}
+                                                                <button type="button" class="btn btn-sm btn-success">Accept</button>
+                                                                <button type="button" class="btn btn-sm btn-danger">Reject</button>
+                                                            {% endif %}
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            {% endfor %}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            {% else %}
+                                <div class="text-center py-4">
+                                    <i class="fas fa-calendar-times fa-3x text-muted mb-3"></i>
+                                    <p class="mb-0">No appointments scheduled for today</p>
+                                </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Recent Patients -->
+                <div class="col-lg-4 mb-4">
+                    <div class="card shadow h-100">
+                        <div class="card-header py-3 d-flex justify-content-between align-items-center">
+                            <h6 class="m-0 font-weight-bold text-primary">Recent Patients</h6>
+                        </div>
+                        <div class="card-body">
+                            {% if recent_patients %}
+                                <ul class="patient-list">
+                                    {% for patient in recent_patients %}
+                                        <li class="patient-item">
+                                            <img src="https://via.placeholder.com/50" alt="Patient" class="patient-avatar">
+                                            <div class="patient-info">
+                                                <div class="patient-name">{{ patient.first_name }} {{ patient.last_name }}</div>
+                                                <div class="patient-details">
+                                                    <i class="far fa-calendar-alt"></i> Last visit: {{ patient.last_visit|date:"M d, Y" }}
+                                                </div>
+                                            </div>
+                                            <div class="patient-action">
+                                                <button class="btn btn-sm btn-outline-primary">View</button>
+                                            </div>
+                                        </li>
+                                    {% endfor %}
+                                </ul>
+                            {% else %}
+                                <div class="text-center py-4">
+                                    <i class="fas fa-user-injured fa-3x text-muted mb-3"></i>
+                                    <p class="mb-0">No recent patients</p>
+                                </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Calendar and Notifications Row -->
+            <div class="row">
+                <!-- Calendar -->
+                <div class="col-lg-8 mb-4">
+                    <div class="card shadow h-100">
+                        <div class="card-header py-3 d-flex justify-content-between align-items-center">
+                            <h6 class="m-0 font-weight-bold text-primary">Calendar</h6>
+                        </div>
+                        <div class="card-body">
+                            <div class="calendar-container">
+                                <div class="calendar-header">
+                                    <div class="calendar-title">March 2025</div>
+                                    <div class="calendar-nav">
+                                        <button class="calendar-nav-btn"><i class="fas fa-chevron-left"></i></button>
+                                        <button class="calendar-nav-btn">Today</button>
+                                        <button class="calendar-nav-btn"><i class="fas fa-chevron-right"></i></button>
+                                    </div>
+                                </div>
+                                <div class="calendar-grid">
+                                    <div class="calendar-day">Sun</div>
+                                    <div class="calendar-day">Mon</div>
+                                    <div class="calendar-day">Tue</div>
+                                    <div class="calendar-day">Wed</div>
+                                    <div class="calendar-day">Thu</div>
+                                    <div class="calendar-day">Fri</div>
+                                    <div class="calendar-day">Sat</div>
+                                    
+                                    <!-- Calendar dates would be dynamically generated -->
+                                    <div class="calendar-date">1</div>
+                                    <div class="calendar-date">2</div>
+                                    <div class="calendar-date">3</div>
+                                    <div class="calendar-date">4</div>
+                                    <div class="calendar-date">5</div>
+                                    <div class="calendar-date">6</div>
+                                    <div class="calendar-date">7</div>
+                                    <div class="calendar-date">8</div>
+                                    <div class="calendar-date has-events">9</div>
+                                    <div class="calendar-date active has-events">10</div>
+                                    <div class="calendar-date has-events">11</div>
+                                    <div class="calendar-date">12</div>
+                                    <div class="calendar-date">13</div>
+                                    <div class="calendar-date">14</div>
+                                    <!-- More dates would be added dynamically -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Notifications -->
+                <div class="col-lg-4 mb-4">
+                    <div class="card shadow h-100">
+                        <div class="card-header py-3 d-flex justify-content-between align-items-center">
+                            <h6 class="m-0 font-weight-bold text-primary">Notifications</h6>
+                        </div>
+                        <div class="card-body">
+                            <div class="list-group">
+                                <a href="#" class="list-group-item list-group-item-action">
+                                    <div class="d-flex w-100 justify-content-between">
+                                        <h6 class="mb-1">New Appointment Request</h6>
+                                        <small class="text-muted">3 hours ago</small>
+                                    </div>
+                                    <p class="mb-1">John Smith has requested an appointment for tomorrow at 10:00 AM.</p>
+                                </a>
+                                <a href="#" class="list-group-item list-group-item-action">
+                                    <div class="d-flex w-100 justify-content-between">
+                                        <h6 class="mb-1">Lab Results Available</h6>
+                                        <small class="text-muted">1 day ago</small>
+                                    </div>
+                                    <p class="mb-1">Lab results for patient Sarah Johnson are now available.</p>
+                                </a>
+                                <a href="#" class="list-group-item list-group-item-action">
+                                    <div class="d-flex w-100 justify-content-between">
+                                        <h6 class="mb-1">Staff Meeting</h6>
+                                        <small class="text-muted">2 days ago</small>
+                                    </div>
+                                    <p class="mb-1">Reminder: Staff meeting scheduled for Friday at 2:00 PM.</p>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Summary Section -->
+<div class="row">
+    <div class="col-12 mb-4">
+        <div class="card shadow">
+            <div class="card-header py-3 d-flex justify-content-between align-items-center">
+                <h6 class="m-0 font-weight-bold text-primary">Department Summary</h6>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-4 mb-4 mb-md-0">
+                        <div class="payment-stat">
+                            <div class="payment-stat-icon bg-primary">
+                                <i class="fas fa-user-md"></i>
+                            </div>
+                            <div class="payment-stat-info">
+                                <h5>{{ doctor.dep_name }}</h5>
+                                <p>Your Department</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4 mb-4 mb-md-0">
+                        <div class="payment-stat">
+                            <div class="payment-stat-icon bg-success">
+                                <i class="fas fa-procedures"></i>
+                            </div>
+                            <div class="payment-stat-info">
+                                <h5>{{ patient_count }}</h5>
+                                <p>Total Patients</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="payment-stat">
+                            <div class="payment-stat-icon bg-info">
+                                <i class="fas fa-calendar-check"></i>
+                            </div>
+                            <div class="payment-stat-info">
+                                <h5>{{ total_appointments }}</h5>
+                                <p>Total Appointments</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% include 'footer.html' %}
+{% endblock content %}

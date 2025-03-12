@@ -1,0 +1,66 @@
+<!-- medical_history.html -->
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+<div class="container mt-5" style="margin-bottom: 100px;">
+  <div class="card">
+    <div class="card-header bg-primary text-white">
+      <h2 class="mb-0">My Appointments</h2>
+    </div>
+    <div class="card-body">
+      <table class="table table-bordered table-striped table-hover">
+        <thead class="thead-dark">
+          <tr>
+            <th>Date</th>
+            <th>Doctor</th>
+            <th>Reason</th>
+            <th>Status</th>
+            <th>Payment Status</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% if appointments %}
+            {% for appointment in appointments %}
+              <tr>
+                <td>{{ appointment.appointment_date }}</td>
+                <td>{{ appointment.doctor.doc_name }}</td>
+                <td>{{ appointment.reason }}</td>
+                <td>
+                  <span class="badge {% if appointment.status == 'Accepted' %}badge-success{% elif appointment.status == 'Rejected' %}badge-danger{% elif appointment.status == 'Requested' %}badge-warning{% else %}badge-secondary{% endif %}">
+                    {{ appointment.status }}
+                  </span>
+                </td>
+                <td>
+                  <span class="badge {% if appointment.payment_status == 'Completed' %}badge-success{% elif appointment.payment_status == 'Failed' %}badge-danger{% else %}badge-warning{% endif %}">
+                    {{ appointment.payment_status }}
+                  </span>
+                </td>
+                <td>
+                  {% if appointment.payment_status == 'Pending' %}
+                    <a href="{% url 'Home:initiate_payment' appointment.id %}" class="btn btn-primary btn-sm">Complete Payment</a>
+                  {% elif appointment.status == 'Accepted' %}
+                    <span class="text-success"><i class="fas fa-check-circle"></i> Confirmed</span>
+                  {% elif appointment.status == 'Rejected' %}
+                    <span class="text-danger"><i class="fas fa-times-circle"></i> Rejected</span>
+                  {% else %}
+                    <span class="text-warning"><i class="fas fa-clock"></i> Awaiting Review</span>
+                  {% endif %}
+                </td>
+              </tr>
+            {% endfor %}
+          {% else %}
+            <tr>
+              <td colspan="6" class="text-center">No appointments found.</td>
+            </tr>
+          {% endif %}
+        </tbody>
+      </table>
+    </div>
+    <div class="card-footer">
+      <a href="{% url 'Home:appointment' %}" class="btn btn-primary">Book New Appointment</a>
+    </div>
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,51 @@
+<!-- doc_view_appoint.html -->
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header bg-primary text-white">
+                    <h3>Appointments for Dr. {{ doctor.doc_name }}</h3>
+                </div>
+                <div class="card-body">
+                    {% if appointments %}
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>Patient</th>
+                                <th>Date & Time</th>
+                                <th>Reason</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for appointment in appointments %}
+                            <tr>
+                                <td>{{ appointment.patient.username }}</td>
+                                <td>{{ appointment.appointment_date }}</td>
+                                <td>{{ appointment.reason }}</td>
+                                <td>
+                                    <span class="badge {% if appointment.status == 'Accepted' %}badge-success{% elif appointment.status == 'Rejected' %}badge-danger{% else %}badge-warning{% endif %}">
+                                        {{ appointment.status }}
+                                    </span>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                    {% else %}
+                    <div class="alert alert-info">
+                        <p>No appointments found.</p>
+                    </div>
+                    {% endif %}
+                </div>
+                <div class="card-footer">
+                    <a href="{% url 'Home:doctor_dashboard' %}" class="btn btn-primary">Back to Dashboard</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

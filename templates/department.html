@@ -1,0 +1,303 @@
+{% extends 'base.html' %} {% load static %}
+
+<head>
+    {% include 'head.html' %}
+</head>
+<body>
+    <!-- ? Preloader Start -->
+    <div id="preloader-active">
+        <div class="preloader d-flex align-items-center justify-content-center">
+            <div class="preloader-inner position-relative">
+                <div class="preloader-circle"></div>
+                <div class="preloader-img pere-text">
+                    <img src="assets/img/logo/loder.png" alt="">
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Preloader Start -->
+<header>
+    <!--? Header Start -->
+    {% include 'header.html' %}
+    <!-- Header End -->
+</header>
+
+    {% block content %}
+    <!--? Hero Start -->
+    
+    <div class="slider-area2">
+        <div class="slider-height2 d-flex align-items-center" style="height: 245px;
+    background-size: cover;">
+            <div class="container">
+                <div class="row">
+                <div class="col-xl-12">
+                    <div class="hero-cap hero-cap2 text-center">
+                        <h2>Departments</h2>
+                    </div>
+                </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Hero End -->
+    <!--? department_area_start  -->
+    <div class="department_area section-padding2">
+        <div class="container">
+            <!-- Section Tittle -->
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="section-tittle text-center mb-5">
+                        <span class="subheading">Our Departments</span>
+                        <h2>Our Medical Services</h2>
+                        <p class="mt-3">Providing exceptional healthcare with advanced medical expertise</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="row">
+                {% for d in Departments %}
+                <div class="col-lg-4 col-md-6 mb-4">
+                    <div class="department-card h-100">
+                        <div class="card-image">
+                            <img src="{{ d.dep_image.url }}" alt="{{ d.dep_name }}">
+                            <div class="department-icon">
+                                <i class="fas fa-hospital-user"></i>
+                            </div>
+                        </div>
+                        <div class="card-content">
+                            <h3>{{ d.dep_name }}</h3>
+                            <p>{{ d.dep_description|truncatechars:120 }}</p>
+                            <div class="card-actions">
+                                <a href="#department-{{ d.id }}" class="btn btn-outline" data-toggle="modal">View Details</a>
+                                {% if request.user.is_authenticated %}
+                                <a href="{% url 'Home:appointment' %}" class="btn btn-primary">Book Appointment</a>
+                                {% else %}
+                                <a href="{% url 'Home:login' %}" class="btn btn-primary">Book Appointment</a>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Department Detail Modal -->
+                <div class="modal fade" id="department-{{ d.id }}" tabindex="-1" role="dialog" aria-hidden="true">
+                    <div class="modal-dialog modal-lg" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title">{{ d.dep_name }}</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="row">
+                                    <div class="col-md-5">
+                                        <img src="{{ d.dep_image.url }}" alt="{{ d.dep_name }}" class="img-fluid rounded">
+                                    </div>
+                                    <div class="col-md-7">
+                                        <p>{{ d.dep_description }}</p>
+                                        <div class="department-features mt-4">
+                                            <h5>Our Services</h5>
+                                            <ul class="features-list">
+                                                <li><i class="fas fa-check-circle"></i> Advanced Diagnostics</li>
+                                                <li><i class="fas fa-check-circle"></i> Expert Consultations</li>
+                                                <li><i class="fas fa-check-circle"></i> Specialized Treatments</li>
+                                                <li><i class="fas fa-check-circle"></i> 24/7 Emergency Care</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                {% if request.user.is_authenticated %}
+                                <a href="{% url 'Home:appointment' %}" class="btn btn-primary">Book Appointment</a>
+                                {% else %}
+                                <a href="{% url 'Home:login' %}" class="btn btn-primary">Book Appointment</a>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+    
+    <style>
+    /* Department Styles */
+    .subheading {
+        color: #0d6efd;
+        font-size: 1.1rem;
+        font-weight: 600;
+        display: block;
+        margin-bottom: 10px;
+    }
+    
+    .section-tittle h2 {
+        font-size: 2.5rem;
+        margin-bottom: 15px;
+        color: #223645;
+    }
+    
+    .department-card {
+        background: #fff;
+        border-radius: 15px;
+        overflow: hidden;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    
+    .department-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+    }
+    
+    .card-image {
+        position: relative;
+        height: 200px;
+        overflow: hidden;
+    }
+    
+    .card-image img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform 0.3s ease;
+    }
+    
+    .department-card:hover .card-image img {
+        transform: scale(1.05);
+    }
+    
+    .department-icon {
+        position: absolute;
+        bottom: -25px;
+        right: 20px;
+        width: 50px;
+        height: 50px;
+        background: #0d6efd;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-size: 1.5rem;
+        box-shadow: 0 4px 10px rgba(13, 110, 253, 0.3);
+    }
+    
+    .card-content {
+        padding: 25px;
+    }
+    
+    .card-content h3 {
+        color: #223645;
+        font-size: 1.5rem;
+        margin-bottom: 15px;
+    }
+    
+    .card-content p {
+        color: #6c757d;
+        margin-bottom: 20px;
+        min-height: 75px;
+    }
+    
+    .card-actions {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+    
+    .btn {
+        padding: 10px 20px;
+        border-radius: 50px;
+        font-weight: 600;
+        transition: all 0.3s ease;
+    }
+    
+    .btn-primary {
+        background: linear-gradient(135deg, #0d6efd 0%, #0a58ca 100%);
+        border: none;
+        color: white;
+    }
+    
+    .btn-primary:hover {
+        background: linear-gradient(135deg, #0a58ca 0%, #084298 100%);
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(13, 110, 253, 0.3);
+    }
+    
+    .btn-outline {
+        background: transparent;
+        border: 2px solid #0d6efd;
+        color: #0d6efd;
+    }
+    
+    .btn-outline:hover {
+        background: rgba(13, 110, 253, 0.1);
+        transform: translateY(-2px);
+    }
+    
+    /* Modal Styles */
+    .modal-content {
+        border-radius: 15px;
+        overflow: hidden;
+    }
+    
+    .modal-header {
+        background: linear-gradient(135deg, #0d6efd 0%, #0a58ca 100%);
+        color: white;
+        border-bottom: none;
+    }
+    
+    .modal-title {
+        font-weight: 600;
+    }
+    
+    .close {
+        color: white;
+        opacity: 1;
+    }
+    
+    .features-list {
+        list-style: none;
+        padding: 0;
+    }
+    
+    .features-list li {
+        display: flex;
+        align-items: center;
+        margin-bottom: 10px;
+        color: #495057;
+    }
+    
+    .features-list li i {
+        color: #0d6efd;
+        margin-right: 10px;
+    }
+    
+    /* Responsive Adjustments */
+    @media (max-width: 991px) {
+        .card-content p {
+            min-height: auto;
+        }
+    }
+    
+    @media (max-width: 767px) {
+        .card-actions {
+            flex-direction: column;
+            gap: 10px;
+        }
+        
+        .btn {
+            width: 100%;
+            text-align: center;
+        }
+    }
+    </style>
+    {% endblock content %}
+    
+    {% include 'scripts.html' %}
+    
+    </body>
+</html>

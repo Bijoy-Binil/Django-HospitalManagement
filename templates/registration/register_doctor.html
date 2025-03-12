@@ -1,0 +1,167 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+<div class="registration-container">
+  <div class="registration-card">
+    <div class="registration-header">
+      <img src="{% static 'img/logo/logo.png' %}" alt="Hospital Logo" class="registration-logo">
+      <h2>Doctor Registration</h2>
+      <p>Create your doctor account</p>
+    </div>
+    
+    <form action="" method="post" enctype="multipart/form-data" class="registration-form">
+      {% csrf_token %}
+      
+      <div class="crispy-form-wrapper">
+        {{ form|crispy }}
+      </div>
+      
+      <button type="submit" class="btn btn-primary btn-block">Register</button>
+      <div class="login-link">
+        Already have an account? <a href="{% url 'Home:login' %}">Login here</a>
+      </div>
+    </form>
+  </div>
+</div>
+
+<style>
+  .registration-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 80vh;
+    padding: 2rem;
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+  }
+  
+  .registration-card {
+    width: 100%;
+    max-width: 700px;
+    background-color: #fff;
+    border-radius: 1rem;
+    box-shadow: 0 0.5rem 1.5rem rgba(0, 0, 0, 0.15);
+    padding: 2.5rem;
+    transition: transform 0.3s ease;
+  }
+  
+  .registration-card:hover {
+    transform: translateY(-5px);
+  }
+  
+  .registration-header {
+    text-align: center;
+    margin-bottom: 2rem;
+  }
+  
+  .registration-logo {
+    max-width: 150px;
+    margin-bottom: 1.5rem;
+  }
+  
+  .registration-header h2 {
+    font-size: 2.2rem;
+    font-weight: 700;
+    color: #2c3e50;
+    margin-bottom: 0.5rem;
+  }
+  
+  .registration-header p {
+    font-size: 1.2rem;
+    color: #6c757d;
+  }
+  
+  .registration-form .crispy-form-wrapper {
+    margin-bottom: 1.5rem;
+  }
+  
+  /* Increase font size for all form elements */
+  .registration-form label {
+    font-size: 1.1rem !important;
+    font-weight: 600 !important;
+    color: #495057 !important;
+    margin-bottom: 0.5rem !important;
+  }
+  
+  .registration-form .form-control {
+    font-size: 1.1rem !important;
+    padding: 0.75rem 1rem !important;
+    border-radius: 0.5rem !important;
+    border: 1px solid #ced4da !important;
+  }
+  
+  .registration-form select.form-control {
+    height: auto !important;
+    padding: 0.75rem 1rem !important;
+  }
+  
+  .registration-form .form-group {
+    margin-bottom: 1.5rem !important;
+  }
+  
+  .registration-form .btn-primary {
+    background-color: #4e73df;
+    border: none;
+    height: 3.2rem;
+    font-size: 1.2rem;
+    font-weight: 600;
+    border-radius: 0.5rem;
+    transition: all 0.3s;
+    margin-top: 1rem;
+  }
+  
+  .registration-form .btn-primary:hover {
+    background-color: #2653d4;
+    transform: translateY(-2px);
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+  }
+  
+  .login-link {
+    text-align: center;
+    margin-top: 1.5rem;
+    font-size: 1.1rem;
+    color: #6c757d;
+  }
+  
+  .login-link a {
+    color: #4e73df;
+    text-decoration: none;
+    font-weight: 600;
+    transition: color 0.3s;
+  }
+  
+  .login-link a:hover {
+    color: #2653d4;
+    text-decoration: underline;
+  }
+  
+  /* Crispy forms specific styling */
+  .asteriskField {
+    color: #dc3545;
+    margin-left: 0.25rem;
+  }
+  
+  .help-block {
+    font-size: 0.9rem !important;
+    color: #6c757d !important;
+    margin-top: 0.25rem !important;
+  }
+  
+  /* Responsive adjustments */
+  @media (max-width: 768px) {
+    .registration-card {
+      padding: 1.5rem;
+    }
+    
+    .registration-header h2 {
+      font-size: 1.8rem;
+    }
+    
+    .registration-form .btn-primary {
+      height: 3rem;
+      font-size: 1.1rem;
+    }
+  }
+</style>
+{% endblock content %}

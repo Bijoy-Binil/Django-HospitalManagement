@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="card">
+        <div class="card-header bg-primary text-white">
+            <h3>Manage Appointment</h3>
+        </div>
+        <div class="card-body">
+            <h4 class="mb-4">Appointment Details</h4>
+
+            <table class="table table-bordered table-striped">
+                <tbody>
+                    <tr>
+                        <td><strong>Patient Name</strong></td>
+                        <td>{{ appointment.patient.username }}</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Doctor Name</strong></td>
+                        <td>{{ appointment.doctor }}</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Appointment Date</strong></td>
+                        <td>{{ appointment.appointment_date }}</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Reason</strong></td>
+                        <td>{{ appointment.reason }}</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Current Status</strong></td>
+                        <td>
+                            <span class="badge {% if appointment.status == 'Accepted' %}badge-success{% elif appointment.status == 'Rejected' %}badge-danger{% else %}badge-warning{% endif %}">
+                                {{ appointment.status }}
+                            </span>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h4 class="mt-4 mb-3">Update Appointment Status</h4>
+
+            <form method="post">
+                {% csrf_token %}
+                <div class="d-flex justify-content-center">
+                    <button class="btn btn-success mx-2" type="submit" name="action" value="accept">Accept Appointment</button>
+                    <button class="btn btn-danger mx-2" type="submit" name="action" value="reject">Reject Appointment</button>
+                </div>
+            </form>
+        </div>
+        <div class="card-footer">
+            <a href="{% url 'Home:receptionist_dashboard' %}" class="btn btn-secondary">Back to Dashboard</a>
+        </div>
+    </div>
+</div>
+{% endblock %}

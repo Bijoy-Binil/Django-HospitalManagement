@@ -1,0 +1,444 @@
+{% load static %}
+
+<style>
+    /* Ensure footer stays at bottom of page */
+    html {
+        height: 100%;
+    }
+
+    body {
+        min-height: 100%;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .content-wrapper {
+        flex: 1 0 auto;
+    }
+
+    .footer-area {
+        flex-shrink: 0;
+        background: linear-gradient(135deg, #2c3e50 0%, #1a2a3a 100%);
+        color: #fff;
+        padding: 80px 0 0;
+        position: relative;
+        z-index: 1;
+        overflow: hidden;
+        margin-top: 60px;
+    }
+    
+    .footer-area::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-image: url('{% static "img/gallery/footer_bg.jpg" %}');
+        background-size: cover;
+        background-position: center;
+        opacity: 0.1;
+        z-index: -1;
+    }
+    
+    .footer-wave {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        overflow: hidden;
+        line-height: 0;
+        transform: rotate(180deg);
+    }
+    
+    .footer-wave svg {
+        position: relative;
+        display: block;
+        width: calc(100% + 1.3px);
+        height: 70px;
+    }
+    
+    .footer-wave .shape-fill {
+        fill: #f8f9fc;
+    }
+    
+    .footer-heading {
+        color: #fff;
+        font-size: 1.7rem;
+        font-weight: 700;
+        margin-bottom: 1.8rem;
+        position: relative;
+        padding-bottom: 0.75rem;
+    }
+    
+    .footer-heading::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 50px;
+        height: 3px;
+        background: #4e73df;
+    }
+    
+    .footer-logo img {
+        max-width: 200px;
+        margin-bottom: 1.8rem;
+    }
+    
+    .footer-text {
+        color: rgba(255, 255, 255, 0.8);
+        margin-bottom: 1.5rem;
+        font-size: 1rem;
+        line-height: 1.7;
+    }
+    
+    .footer-contact-info {
+        margin-bottom: 1.5rem;
+    }
+    
+    .footer-contact-item {
+        display: flex;
+        align-items: flex-start;
+        margin-bottom: 1.2rem;
+    }
+    
+    .footer-contact-icon {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        color: #4e73df;
+        font-size: 1.3rem;
+        margin-right: 0.75rem;
+        margin-top: 0.25rem;
+        width: 24px;
+    }
+    
+    .footer-contact-text {
+        color: rgba(255, 255, 255, 0.8);
+        font-size: 1rem;
+    }
+    
+    .footer-links {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+    
+    .footer-links li {
+        margin-bottom: 1rem;
+    }
+    
+    .footer-links a {
+        color: rgba(255, 255, 255, 0.8);
+        text-decoration: none;
+        font-size: 1rem;
+        transition: all 0.3s;
+        display: block;
+        position: relative;
+        padding-left: 15px;
+    }
+    
+    .footer-links a::before {
+        content: '\f105';
+        font-family: 'Font Awesome 5 Free';
+        font-weight: 900;
+        position: absolute;
+        left: 0;
+        top: 50%;
+        transform: translateY(-50%);
+        color: #4e73df;
+    }
+    
+    .footer-links a:hover {
+        color: #fff;
+        padding-left: 20px;
+    }
+    
+    .footer-newsletter {
+        margin-bottom: 1.5rem;
+    }
+    
+    .footer-newsletter p {
+        color: rgba(255, 255, 255, 0.8);
+        margin-bottom: 1rem;
+        font-size: 1rem;
+    }
+    
+    .footer-newsletter-form {
+        position: relative;
+    }
+    
+    .footer-newsletter-input {
+        width: 100%;
+        padding: 0.85rem 1rem;
+        padding-right: 4rem;
+        background-color: rgba(255, 255, 255, 0.1);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        border-radius: 0.35rem;
+        color: #fff;
+        font-size: 1rem;
+    }
+    
+    .footer-newsletter-input::placeholder {
+        color: rgba(255, 255, 255, 0.5);
+    }
+    
+    .footer-newsletter-input:focus {
+        outline: none;
+        background-color: rgba(255, 255, 255, 0.15);
+        border-color: rgba(255, 255, 255, 0.3);
+    }
+    
+    .footer-newsletter-button {
+        position: absolute;
+        top: 0;
+        right: 0;
+        height: 100%;
+        padding: 0 1.2rem;
+        background-color: #4e73df;
+        border: none;
+        border-radius: 0 0.35rem 0.35rem 0;
+        color: #fff;
+        font-size: 1rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s;
+    }
+    
+    .footer-newsletter-button:hover {
+        background-color: #2653d4;
+    }
+    
+    .footer-social {
+        display: flex;
+        margin-top: 1.5rem;
+    }
+    
+    .footer-social-link {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 44px;
+        height: 44px;
+        background-color: rgba(255, 255, 255, 0.1);
+        border-radius: 50%;
+        color: #fff;
+        font-size: 1.1rem;
+        margin-right: 0.75rem;
+        transition: all 0.3s;
+        text-decoration: none;
+    }
+    
+    .footer-social-link:hover {
+        background-color: #4e73df;
+        color: #fff;
+        transform: translateY(-3px);
+    }
+    
+    .footer-bottom {
+        border-top: 1px solid rgba(255, 255, 255, 0.1);
+        padding: 1.5rem 0;
+        margin-top: 3rem;
+    }
+    
+    .footer-copyright {
+        color: rgba(255, 255, 255, 0.8);
+        font-size: 1rem;
+    }
+    
+    .footer-bottom-links {
+        display: flex;
+        justify-content: flex-end;
+    }
+    
+    .footer-bottom-link {
+        color: rgba(255, 255, 255, 0.8);
+        font-size: 1rem;
+        margin-left: 1.5rem;
+        text-decoration: none;
+        transition: all 0.3s;
+    }
+    
+    .footer-bottom-link:hover {
+        color: #fff;
+    }
+    
+    @media (max-width: 768px) {
+        .footer-area {
+            padding: 60px 0 0;
+            margin-top: 40px;
+        }
+        
+        .footer-heading {
+            margin-top: 2rem;
+            font-size: 1.5rem;
+        }
+        
+        .footer-bottom-links {
+            justify-content: flex-start;
+            margin-top: 1rem;
+            flex-wrap: wrap;
+        }
+        
+        .footer-bottom-link {
+            margin-left: 0;
+            margin-right: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .footer-social {
+            flex-wrap: wrap;
+        }
+        
+        .footer-social-link {
+            margin-bottom: 0.75rem;
+        }
+    }
+</style>
+
+<div class="footer-area">
+    <div class="footer-wave">
+        <svg data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120" preserveAspectRatio="none">
+            <path d="M321.39,56.44c58-10.79,114.16-30.13,172-41.86,82.39-16.72,168.19-17.73,250.45-.39C823.78,31,906.67,72,985.66,92.83c70.05,18.48,146.53,26.09,214.34,3V0H0V27.35A600.21,600.21,0,0,0,321.39,56.44Z" class="shape-fill"></path>
+        </svg>
+    </div>
+    
+    <div class="container">
+        <div class="row">
+            <!-- About Hospital -->
+            <div class="col-lg-3 col-md-6 mb-4 mb-lg-0">
+                <div class="footer-logo">
+                    <img src="{% static 'img/logo/logo2_footer.png' %}" alt="Hospital Logo" class="img-fluid">
+                </div>
+                <p class="footer-text">
+                    Providing exceptional healthcare services with compassion and excellence. Our mission is to improve the health and wellbeing of the communities we serve.
+                </p>
+                <div class="footer-social">
+                    <a href="#" class="footer-social-link"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#" class="footer-social-link"><i class="fab fa-twitter"></i></a>
+                    <a href="#" class="footer-social-link"><i class="fab fa-instagram"></i></a>
+                    <a href="#" class="footer-social-link"><i class="fab fa-linkedin-in"></i></a>
+                </div>
+            </div>
+            
+            <!-- Quick Links -->
+            <div class="col-lg-3 col-md-6 mb-4 mb-lg-0">
+                <h3 class="footer-heading">Quick Links</h3>
+                <ul class="footer-links">
+                    <li><a href="{% url 'Home:home' %}">Home</a></li>
+                    <li><a href="{% url 'Home:about' %}">About Us</a></li>
+                    <li><a href="{% url 'Home:doctor' %}">Our Doctors</a></li>
+                    <li><a href="{% url 'Home:department' %}">Departments</a></li>
+                    <li><a href="{% url 'Home:contact' %}">Contact Us</a></li>
+                    <li><a href="{% url 'Home:appointment' %}">Book Appointment</a></li>
+                </ul>
+            </div>
+            
+            <!-- Contact Info -->
+            <div class="col-lg-3 col-md-6 mb-4 mb-lg-0">
+                <h3 class="footer-heading">Contact Info</h3>
+                <div class="footer-contact-info">
+                    <div class="footer-contact-item">
+                        <div class="footer-contact-icon">
+                            <i class="fas fa-map-marker-alt"></i>
+                        </div>
+                        <div class="footer-contact-text">
+                            123 Healthcare Blvd, Medical District<br>
+                            New York, NY 10001
+                        </div>
+                    </div>
+                    <div class="footer-contact-item">
+                        <div class="footer-contact-icon">
+                            <i class="fas fa-phone-alt"></i>
+                        </div>
+                        <div class="footer-contact-text">
+                            +1 (123) 456-7890<br>
+                            +1 (987) 654-3210
+                        </div>
+                    </div>
+                    <div class="footer-contact-item">
+                        <div class="footer-contact-icon">
+                            <i class="fas fa-envelope"></i>
+                        </div>
+                        <div class="footer-contact-text">
+                            info@hospital.com<br>
+                            support@hospital.com
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Newsletter -->
+            <div class="col-lg-3 col-md-6">
+                <h3 class="footer-heading">Newsletter</h3>
+                <div class="footer-newsletter">
+                    <p>Subscribe to our newsletter to receive updates on healthcare tips, services, and special offers.</p>
+                    <form class="footer-newsletter-form">
+                        <input type="email" class="footer-newsletter-input" placeholder="Your Email Address">
+                        <button type="submit" class="footer-newsletter-button">
+                            <i class="fas fa-paper-plane"></i>
+                        </button>
+                    </form>
+                </div>
+                <div class="footer-contact-item mt-4">
+                    <div class="footer-contact-icon">
+                        <i class="far fa-clock"></i>
+                    </div>
+                    <div class="footer-contact-text">
+                        <strong>Working Hours:</strong><br>
+                        Mon-Fri: 8:00 AM - 8:00 PM<br>
+                        Sat-Sun: 9:00 AM - 5:00 PM
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="footer-bottom">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-md-6">
+                    <div class="footer-copyright">
+                        &copy; <script>document.write(new Date().getFullYear());</script> Hospital Management System. All Rights Reserved.
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="footer-bottom-links">
+                        <a href="#" class="footer-bottom-link">Privacy Policy</a>
+                        <a href="#" class="footer-bottom-link">Terms of Service</a>
+                        <a href="#" class="footer-bottom-link">Sitemap</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Back to top button -->
+<a href="#" class="back-to-top" style="display: inline-block; position: fixed; bottom: 30px; right: 30px; width: 50px; height: 50px; background-color: #4e73df; color: #fff; border-radius: 50%; text-align: center; line-height: 50px; box-shadow: 0 0.15rem 1.75rem 0 rgba(58, 59, 69, 0.3); z-index: 999; opacity: 0; visibility: hidden; transition: all 0.3s; font-size: 1.2rem;">
+    <i class="fas fa-arrow-up"></i>
+</a>
+
+<script>
+    // Back to top button
+    $(window).scroll(function() {
+        if ($(this).scrollTop() > 300) {
+            $('.back-to-top').css({
+                opacity: '1',
+                visibility: 'visible'
+            });
+        } else {
+            $('.back-to-top').css({
+                opacity: '0',
+                visibility: 'hidden'
+            });
+        }
+    });
+    
+    $('.back-to-top').click(function(e) {
+        e.preventDefault();
+        $('html, body').animate({scrollTop: 0}, 800);
+        return false;
+    });
+</script>

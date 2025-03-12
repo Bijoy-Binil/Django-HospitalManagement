@@ -1,0 +1,116 @@
+{% load static %}
+<div class="header-area ">
+    <div class="main-header header-sticky">
+        <div class="container-fluid">
+            <div class="row align-items-center">
+                <!-- Logo -->
+                <div class="col-xl-2 col-lg-2 col-md-1 " style="margin-left: -100px;">
+                    <div class="logo">
+                        <a href="{% url 'Home:home' %}"><img src="{% static 'img/logo/logo.png' %}" alt=""></a>
+                    </div>
+                </div>
+                <div class="col-xl-10 col-lg-10 col-md-10">
+                    <div class="menu-main d-flex align-items-center justify-content-end">
+                        <!-- Main-menu -->
+                        <div class="main-menu f-right d-none d-lg-block">
+                            <nav>
+                                <ul id="navigation">
+                                    <li><a href="{% url 'Home:home' %}">Home</a></li>
+                                    <li><a href="{% url 'Home:about' %}">About</a></li>
+                                    <li><a href="{% url 'Home:doctor' %}">Doctors</a></li>
+                                    <li><a href="{% url 'Home:department' %}">Department</a></li>
+                                    <li><a href="{% url 'Home:contact' %}">Contact</a></li>
+                                    
+                                    {% if user.is_authenticated %}
+                                        {% if user.role == 'receptionist' %}
+                                            <li><a href="{% url 'Home:receptionist_MainDashboard' %}" class="dashboard-link">
+                                                <i class="fas fa-tachometer-alt"></i> Dashboard
+                                            </a></li>
+                                        {% elif user.role == 'doctor' %}
+                                            <li><a href="{% url 'Home:doctor_dashboard' %}" class="dashboard-link">
+                                                <i class="fas fa-tachometer-alt"></i> Dashboard
+                                            </a></li>
+                                        {% elif user.role == 'patient' %}
+                                            <li><a href="{% url 'Home:patient_dashboard' %}" class="dashboard-link">
+                                                <i class="fas fa-tachometer-alt"></i> Dashboard
+                                            </a></li>
+                                        {% endif %}
+                                        <li><a href="{% url 'Home:logout' %}" class="logout-link">
+                                            <i class="fas fa-sign-out-alt"></i> Logout
+                                        </a></li>
+                                    {% else %}
+                                        <li><a href="{% url 'Home:login' %}" class="login-link">
+                                            <i class="fas fa-sign-in-alt"></i> Login
+                                        </a></li>
+                                        <li><a href="{% url 'Home:register' %}" class="register-link">
+                                            <i class="fas fa-user-plus"></i> Register
+                                        </a></li>
+                                    {% endif %}
+                                </ul>
+                            </nav>
+                        </div>
+                    </div>
+                </div>   
+                <!-- Mobile Menu -->
+                <div class="col-12">
+                    <div class="mobile_menu d-block d-lg-none"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+.dashboard-link, .login-link, .register-link, .logout-link {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    transition: color 0.3s ease;
+}
+
+.dashboard-link {
+    color: #0d6efd !important;
+    font-weight: 600;
+}
+
+.dashboard-link:hover {
+    color: #0a58ca !important;
+}
+
+.logout-link {
+    color: #dc3545 !important;
+    font-weight: 600;
+}
+
+.logout-link:hover {
+    color: #bb2d3b !important;
+}
+
+.login-link {
+    color: #198754 !important;
+    font-weight: 600;
+}
+
+.login-link:hover {
+    color: #157347 !important;
+}
+
+.register-link {
+    color: #6610f2 !important;
+    font-weight: 600;
+}
+
+.register-link:hover {
+    color: #520dc2 !important;
+}
+
+.dashboard-link i, .login-link i, .register-link i, .logout-link i {
+    font-size: 14px;
+}
+
+@media (max-width: 991px) {
+    .dashboard-link, .login-link, .register-link, .logout-link {
+        padding: 10px 0;
+    }
+}
+</style>

@@ -1,0 +1,220 @@
+{% extends 'base.html' %} {% load static %}
+
+<!DOCTYPE html>
+<html class="no-js" lang="zxx">
+  <head> </head>
+  <body>
+    <!-- ? Preloader Start -->
+    <div id="preloader-active">
+        <div class="preloader d-flex align-items-center justify-content-center">
+            <div class="preloader-inner position-relative">
+                <div class="preloader-circle"></div>
+                <div class="preloader-img pere-text">
+                    <img src="{% static 'img/logo/loder.png' %}" alt="">
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Preloader Start -->
+    <header>
+      <!--? Header Start -->
+
+      <!-- Header End -->
+    </header>
+    <main>
+      {% block content %}
+      <!--? slider Area Start-->
+      <div class="slider-area position-relative">
+        <div class="slider-active">
+          <!-- Single Slider -->
+          <div class="single-slider slider-height d-flex align-items-center">
+            <div class="container">
+              <div class="row">
+                <div class="col-xl-7 col-lg-9 col-md-8 col-sm-9">
+                  <div class="hero__caption">
+                    <span>Committed to success</span>
+                    <h1 class="cd-headline letters scale">
+                      We care about your
+                      <strong class="cd-words-wrapper">
+                        <b class="is-visible">health</b>
+                        <b>Family</b>
+                        <b>steak</b>
+                      </strong>
+                    </h1>
+                    <p data-animation="fadeInLeft" data-delay="0.1s">
+                      Build a Healthy Nation.
+                    </p>
+                   {% if request.user.is_authenticated %}
+                    <a
+                      href="{% url 'Home:appointment' %}"
+                      class="btn hero-btn"
+                      data-animation="fadeInLeft"
+                      data-delay="0.5s"
+                      >Appointment <i class="ti-arrow-right"></i
+                    </a>
+                    {% else %}
+                    <a
+                      href="{% url 'Home:login' %}"
+                      class="btn hero-btn"
+                      data-animation="fadeInLeft"
+                    >Book Appointment</a>
+                    {% endif %}
+                   
+                    <a
+                   
+                  ></a>
+              
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- Single Slider -->
+          
+        </div>
+      </div>
+      <!-- slider Area End-->
+      <!--? About Start-->
+     
+      <!-- About  End-->
+      <!--? department_area_start  -->
+      <div class="department_area section-padding2">
+        <div class="container">
+          <!-- Section Tittle -->
+          <div class="row">
+            <div class="col-lg-12">
+              <div class="section-tittle text-center mb-25">
+                <span>Our Departments</span>
+                
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-lg-12">
+              <div class="depart_ment_tab mb-30">
+                <!-- Tabs Buttons -->
+                <ul class="nav" id="myTab" role="tablist">
+                  <li class="nav-item">
+                    <a
+                      class="nav-link active"
+                      id="home-tab"
+                      data-toggle="tab"
+                      href="#home"
+                      role="tab"
+                      aria-controls="home"
+                      aria-selected="true"
+                    >
+                      <i class="flaticon-teeth"></i>
+                      <h4>Dentistry</h4>
+                    </a>
+                  </li>
+                  <li class="nav-item">
+                    <a
+                      class="nav-link"
+                      id="profile-tab"
+                      data-toggle="tab"
+                      href="#profile"
+                      role="tab"
+                      aria-controls="profile"
+                      aria-selected="false"
+                    >
+                      <i class="flaticon-cardiovascular"></i>
+                      <h4>Cardiology</h4>
+                    </a>
+                  </li>
+                  <li class="nav-item">
+                    <a
+                      class="nav-link"
+                      id="contact-tab"
+                      data-toggle="tab"
+                      href="#contact"
+                      role="tab"
+                      aria-controls="contact"
+                      aria-selected="false"
+                    >
+                      <i class="flaticon-ear"></i>
+                      <h4>ENT Specialists</h4>
+                    </a>
+                  </li>
+                  <li class="nav-item">
+                    <a
+                      class="nav-link"
+                      id="Astrology-tab"
+                      data-toggle="tab"
+                      href="#Astrology"
+                      role="tab"
+                      aria-controls="contact"
+                      aria-selected="false"
+                    >
+                      <i class="flaticon-bone"></i>
+                      <h4>Astrology</h4>
+                    </a>
+                  </li>
+                  <li class="nav-item">
+                    <a
+                      class="nav-link"
+                      id="Neuroanatomy-tab"
+                      data-toggle="tab"
+                      href="#Neuroanatomy"
+                      role="tab"
+                      aria-controls="contact"
+                      aria-selected="false"
+                    >
+                      <i class="flaticon-lung"></i>
+                      <h4>Neuroanatomy</h4>
+                    </a>
+                  </li>
+                  <li class="nav-item">
+                    <a
+                      class="nav-link"
+                      id="Blood-tab"
+                      data-toggle="tab"
+                      href="#Blood"
+                      role="tab"
+                      aria-controls="contact"
+                      aria-selected="false"
+                    >
+                      <i class="flaticon-cell"></i>
+                      <h4>Blood Screening</h4>
+                    </a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+      
+        </div>
+      </div>
+      <!-- depertment area end  -->
+      <!--? Gallery Area Start -->
+
+      <!-- Gallery Area End -->
+      <!--? All startups Start -->
+
+      <!--All startups End -->
+      <!--? Team Start -->
+
+      <!-- Team End -->
+      <!--? Contact form Start -->
+
+      <!-- Contact form End -->
+      <!--? gallery Products Start -->
+      
+      <!-- gallery Products End -->
+      <!--? Blog start -->
+
+      <!-- Blog End -->
+    </main>
+    <footer>
+      <!--? Footer Start-->
+
+      <!-- Footer End-->
+    </footer>
+    <!-- Scroll Up -->
+    <div id="back-top">
+      <a title="Go to Top" href="#"> <i class="fas fa-level-up-alt"></i></a>
+    </div>
+    {% endblock content %}
+    <!-- JS here -->
+  </body>
+</html>

@@ -1,0 +1,90 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payment Confirmation</title>
+
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Stripe.js -->
+    <script src="https://js.stripe.com/v3/"></script>
+</head>
+<body>
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header bg-primary text-white">
+                    <h3>Payment Confirmation</h3>
+                </div>
+                <div class="card-body">
+                    <h5>You are about to pay for your appointment with Dr. {{ appointment.doctor_name }}.</h5>
+                    <p><strong>Total Amount:</strong> ${{ appointment.amount }}</p>
+
+                    <!-- Payment Form -->
+                    <form id="payment-form" method="POST" action="{% url 'Home:payment_confirmation' appointment.id %}">
+                        {% csrf_token %}
+                        
+                        <!-- Stripe Card Element -->
+                        <div id="card-element" class="mb-3">
+                            <!-- A Stripe Element will be inserted here. -->
+                        </div>
+                        
+                        <button type="submit" id="submit" class="btn btn-primary btn-block">Pay Now</button>
+                        <div id="payment-error" class="text-danger mt-3" role="alert"></div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Bootstrap JS & Popper.js -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+<script>
+    // Initialize Stripe
+    var stripe = Stripe('YOUR_PUBLISHABLE_KEY');  // Replace with your actual publishable key
+    var elements = stripe.elements();
+    var card = elements.create('card');
+    
+    // Mount Stripe Element
+    card.mount('#card-element');
+
+    // Handle form submission
+    var form = document.getElementById('payment-form');
+    form.addEventListener('submit', async function (event) {
+        event.preventDefault();
+
+        // Retrieve the client secret from the hidden input field
+        const clientSecret = document.getElementById('client-secret').value;
+
+        // Confirm the payment
+        const {paymentIntent, error} = await stripe.confirmCardPayment(clientSecret, {
+            payment_method: {
+                card: card,
+                billing_details: {
+                    name: '{{ request.user.username }}',
+                },
+            },
+        });
+
+        if (error) {
+            // Show error message
+            document.getElementById('payment-error').innerText = error.message;
+        } else if (paymentIntent.status === 'succeeded') {
+            // Submit the form to confirm payment status
+            form.submit();
+        }
+    });
+</script>
+
+</body>
+</html>

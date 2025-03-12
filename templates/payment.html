@@ -1,0 +1,91 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header bg-primary text-white">
+                    <h3 class="text-center">Payment for Appointment</h3>
+                </div>
+                <div class="card-body">
+                    <div class="row mb-4">
+                        <div class="col-md-6">
+                            <h5>Appointment Details:</h5>
+                            <p><strong>Doctor:</strong> {{ appointment.doctor.doc_name }}</p>
+                            <p><strong>Date:</strong> {{ appointment.appointment_date }}</p>
+                            <p><strong>Reason:</strong> {{ appointment.reason }}</p>
+                        </div>
+                        <div class="col-md-6">
+                            <h5>Payment Amount:</h5>
+                            <h3 class="text-primary">$50.00</h3>
+                            <p class="text-muted">Consultation Fee</p>
+                        </div>
+                    </div>
+                    
+                    <hr>
+                    
+                    <div class="text-center">
+                        <h4 class="mb-4">Please complete your payment</h4>
+                        
+                        <!-- PayPal Button Container -->
+                        <div id="paypal-button-container"></div>
+                        
+                        <div class="mt-3">
+                            <p class="text-muted">Your appointment will be confirmed after successful payment.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- PayPal JavaScript SDK -->
+<script src="https://www.paypal.com/sdk/js?client-id={{ client_id }}&currency=USD"></script>
+
+<script>
+    // Render the PayPal button
+    paypal.Buttons({
+        // Set up the transaction
+        createOrder: function(data, actions) {
+            return actions.order.create({
+                purchase_units: [{
+                    amount: {
+                        value: '50.00' // The amount to charge
+                    }
+                }]
+            });
+        },
+        
+        // Finalize the transaction
+        onApprove: function(data, actions) {
+            return actions.order.capture().then(function(details) {
+                // Call your server to save the transaction
+                return fetch('{% url "Home:payment_complete" %}', {
+                    method: 'post',
+                    headers: {
+                        'content-type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        appointment_id: {{ appointment.id }},
+                        payment_id: details.id
+                    })
+                })
+                .then(function(response) {
+                    return response.json();
+                })
+                .then(function(data) {
+                    if (data.status === 'success') {
+                        // Redirect to success page
+                        window.location.href = '{% url "Home:payment_success" appointment.id %}';
+                    } else {
+                        alert('There was a problem processing your payment. Please try again.');
+                    }
+                });
+            });
+        }
+    }).render('#paypal-button-container');
+</script>
+{% endblock %} 

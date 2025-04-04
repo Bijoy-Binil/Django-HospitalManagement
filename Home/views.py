@@ -135,7 +135,8 @@ def doctor_dashboard(request):
         approved_appointments = all_appointments.filter(status='Accepted')
         cancelled_appointments = all_appointments.filter(status='Rejected')
         completed_appointments = all_appointments.filter(payment_status='Completed')
-        
+        patient = PatientProfile.objects.get(id=1)  # Or use another query to get the patient
+        profile_image = patient.profile_image
         # Get today's appointments
         today = timezone.now().date()
         todays_appointments = all_appointments.filter(
@@ -173,7 +174,8 @@ def doctor_dashboard(request):
             "todays_appointments": todays_appointments.count(),
             "todays_appointments_list": todays_appointments.order_by('appointment_date'),
             "upcoming_appointments": upcoming_appointments,
-            "recent_patients": recent_patients
+            "recent_patients": recent_patients,
+            "profile_image": profile_image,
         }
         return render(request, "doctor_dashboard.html", context)
     except Doctor.DoesNotExist:
@@ -467,6 +469,20 @@ def rep_view_patients(request):
     }
     
     return render(request, 'rep_view_patients.html', context)
+    
+@login_required
+def rep_view_doctor(request):
+    """
+    View for receptionist to see all doctors in the database
+    """
+    # Get all users with patient role
+    doctors = CustomUser.objects.filter(role='doctor')
+    
+    context = {
+        'doctors': doctors
+    }
+    
+    return render(request, 'rep_view_doctor.html', context)
 
 # Add these PayPal payment views
 @login_required

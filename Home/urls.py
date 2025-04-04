@@ -50,6 +50,7 @@ urlpatterns = [
     path('rep_manage_appoint/<int:appointment_id>/', views.rep_manage_appoint, name='rep_manage_appoint'),
     path('rep_view_appoint', views.rep_view_appoint, name='rep_view_appoint'),
     path('rep_view_patients', views.rep_view_patients, name='rep_view_patients'),
+    path('rep_view_doctor', views.rep_view_doctor, name='rep_view_doctor'),
     path('doc_view_appoint/<int:doctor_id>/', views.doc_view_appoint, name='doc_view_appoint'),
     
     # Payment URLs

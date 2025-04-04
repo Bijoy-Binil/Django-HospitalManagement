@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="card">
+        <div class="card-header bg-primary text-white">
+            <h3>Doctors Records</h3>
+        </div>
+        <div class="card-body">
+            {% if doctors %}
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Username</th>
+                        <th>Full Name</th>
+                        <th>Email</th>
+                        <th>Date Joined</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for doctor in doctors %}
+                    <tr>
+                        <td>{{ doctor.id }}</td>
+                        <td>{{ doctor.username }}</td>
+                        <td>{{ doctor.first_name }} {{ doctor.last_name }}</td>
+                        <td>{{ doctor.email }}</td>
+                        <td>{{ doctor.date_joined|date:"M d, Y" }}</td>
+                        <td>
+                            <a href="#" class="btn btn-info btn-sm">View Details</a>
+                            <a href="#" class="btn btn-primary btn-sm">View Appointments</a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            {% else %}
+            <div class="alert alert-info">
+                <p>No Doctor registered in the system.</p>
+            </div>
+            {% endif %}
+        </div>
+        <div class="card-footer">
+            <a href="{% url 'Home:receptionist_MainDashboard' %}" class="btn btn-secondary">Back to Dashboard</a>
+        </div>
+    </div>
+</div>
+{% endblock %} 

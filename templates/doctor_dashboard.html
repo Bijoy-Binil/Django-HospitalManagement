@@ -618,30 +618,8 @@ body {
                         <span>Patients</span>
                     </a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">
-                        <i class="fas fa-fw fa-notes-medical"></i>
-                        <span>Medical Records</span>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">
-                        <i class="fas fa-fw fa-prescription"></i>
-                        <span>Prescriptions</span>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">
-                        <i class="fas fa-fw fa-chart-line"></i>
-                        <span>Analytics</span>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">
-                        <i class="fas fa-fw fa-user-cog"></i>
-                        <span>Profile Settings</span>
-                    </a>
-                </li>
+       
+       
                 <li class="nav-item">
                     <a class="nav-link" href="{% url 'Home:logout' %}">
                         <i class="fas fa-fw fa-sign-out-alt"></i>
@@ -858,38 +836,7 @@ body {
                 </div>
                 
                 <!-- Recent Patients -->
-                <div class="col-lg-4 mb-4">
-                    <div class="card shadow h-100">
-                        <div class="card-header py-3 d-flex justify-content-between align-items-center">
-                            <h6 class="m-0 font-weight-bold text-primary">Recent Patients</h6>
-                        </div>
-                        <div class="card-body">
-                            {% if recent_patients %}
-                                <ul class="patient-list">
-                                    {% for patient in recent_patients %}
-                                        <li class="patient-item">
-                                            <img src="https://via.placeholder.com/50" alt="Patient" class="patient-avatar">
-                                            <div class="patient-info">
-                                                <div class="patient-name">{{ patient.first_name }} {{ patient.last_name }}</div>
-                                                <div class="patient-details">
-                                                    <i class="far fa-calendar-alt"></i> Last visit: {{ patient.last_visit|date:"M d, Y" }}
-                                                </div>
-                                            </div>
-                                            <div class="patient-action">
-                                                <button class="btn btn-sm btn-outline-primary">View</button>
-                                            </div>
-                                        </li>
-                                    {% endfor %}
-                                </ul>
-                            {% else %}
-                                <div class="text-center py-4">
-                                    <i class="fas fa-user-injured fa-3x text-muted mb-3"></i>
-                                    <p class="mb-0">No recent patients</p>
-                                </div>
-                            {% endif %}
-                        </div>
-                    </div>
-                </div>
+    
             </div>
             
             <!-- Calendar and Notifications Row -->
@@ -1027,5 +974,4 @@ body {
     </div>
 </div>
 
-{% include 'footer.html' %}
 {% endblock content %}

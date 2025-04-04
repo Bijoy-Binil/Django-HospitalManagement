@@ -49,8 +49,48 @@
         </form>
     </div>
 </div>
-
+<div class="mainLogin">
+    <div  id="loginDetailPatient">Patient <br> Username=patient <br>Password=testPatient</div><br>
+    <div id="loginDetailReceptionist">Receptionist <br> Username=receptionist <br>Password=testReceptionist</div><br>
+    <div id="loginDetailDoctor">Doctor<br>  Username=doctor <br>Password=testDoctor</div>
+</div>
 <style>
+    /* ====================== */
+  /* General styling for all login detail divs */
+  .mainLogin{ 
+    padding-left: 1172px;
+    margin-bottom: 301px;
+    margin-top: -455px;
+  }
+  div[id^="loginDetail"] {
+  font-family: Arial, sans-serif;
+  margin: 10px 0;
+  padding: 10px;
+  border-radius: 5px;
+  display: inline-block;
+  width: 300px;
+  font-size: 1.2rem; /* Adjusted font size for better readability */
+}
+
+/* Styling for the Patient login detail */
+#loginDetailPatient {
+  background-color: #f0f8ff;
+  border: 1px solid #add8e6;
+}
+
+/* Styling for the Receptionist login detail */
+#loginDetailReceptionist {
+  background-color: #fff0f5;
+  border: 1px solid #ffb6c1;
+}
+
+/* Styling for the Doctor login detail */
+#loginDetailDoctor {
+  background-color: #f5fffa;
+  border: 1px solid #98fb98;
+}
+
+    /* ====================== */
     .login-container {
         display: flex;
         justify-content: center;

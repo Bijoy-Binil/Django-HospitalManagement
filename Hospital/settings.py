@@ -183,22 +183,25 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'Hospital.wsgi.application'
-
+import pymysql
+pymysql.install_as_MySQLdb()
 
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'hospitaldb',  # Your PostgreSQL database name
-        'USER': 'postgres',            # Your PostgreSQL username
-        'PASSWORD': '8520',    # Your PostgreSQL password
-        'HOST': 'localhost',           # If the database is local
-        'PORT': '5432',                # Default PostgreSQL port
+        'ENGINE': 'django.db.backends.mysql',  # MySQL engine
+        'NAME': 'hospitaldb',  # Your database name
+        'USER': 'root',  # Correct user, no extra spaces
+        'PASSWORD': '8520',  # Replace with the correct password
+        'HOST': 'localhost',  # Host (localhost if MySQL is on the same machine)
+        'PORT': '3306',  # Default MySQL port
+        'OPTIONS': {
+            'init_command': "SET sql_mode='STRICT_TRANS_TABLES'",
+        },
     }
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/5.1/ref/settings/#auth-password-validators
